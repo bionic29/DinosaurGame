@@ -11,7 +11,9 @@ public class Meteor : MonoBehaviour
     MainPlayer player;
     Transform target;
 
-    public float TimeofImpact,TimeofSend ,duration,Mass,Follow;
+    public bool Big;
+
+    public float TimeofImpact,TimeofSend ,duration,Mass,Follow,ExpDestroy;
 
     CamShake Scam;
 
@@ -33,7 +35,7 @@ public class Meteor : MonoBehaviour
 
     void SendMeteor()
     {
-        StartCoroutine(Move(MeteorBody.transform.position, transform.position, 1));
+        StartCoroutine(Move(MeteorBody.transform.position, transform.position, TimeofImpact));
         Invoke(nameof(Hide), TimeofImpact);
     }
     void Hide()
@@ -43,17 +45,46 @@ public class Meteor : MonoBehaviour
         MeteorBody.GetComponent<SpriteRenderer>().enabled=false;
         GameObject Exp = Instantiate(Explode, transform.position, Quaternion.identity);
 
-        if (distance < 15)
+        if (Big)
         {
-            Scam.ShakeDuration = (1/distance);
-            Scam.ShakeAmplitude = (15-distance) * Mass;
-            Scam.ShakeFrequency = 3;
+            Scam.ShakeDuration = 0;
+            Scam.ShakeAmplitude = 0;
+            Scam.ShakeFrequency = 0;
             Scam.ShakeCamera();
         }
-        if(MainPlayer.PlayerHP>0)
+       
+        Invoke(nameof(ImpactShake), 0.1f);
+
+        if (MainPlayer.PlayerHP>0)
         GameManager.Meteorcount++;
 
-        Destroy(Exp, 3);
+        Destroy(Exp, ExpDestroy);
+    }
+
+    void ImpactShake()
+    {
+        if (!Big)
+        {
+            if (!ShakeControlForBig.Incoming)
+            {
+                if (distance < 15)
+                {
+
+                    Scam.ShakeDuration = (1 / distance);
+                    Scam.ShakeAmplitude = (15 - distance) * Mass;
+                    Scam.ShakeFrequency = 3;
+                    Scam.ShakeCamera();
+
+                }
+            }
+        }
+        else
+        {
+            Scam.ShakeDuration = 2;
+            Scam.ShakeAmplitude = 20;
+            Scam.ShakeFrequency = 5;
+            Scam.ShakeCamera();
+        }
     }
 
     // Update is called once per frame
@@ -74,7 +105,7 @@ public class Meteor : MonoBehaviour
 
     IEnumerator Move(Vector3 beginPos, Vector3 endPos, float time)
     {
-        for (float t = 0; t < 1; t += Time.deltaTime / time)
+        for (float t = 0; t < TimeofImpact; t += Time.deltaTime / time)
         {
             MeteorBody.transform.position = Vector3.Lerp(beginPos, endPos, t);
             yield return null;

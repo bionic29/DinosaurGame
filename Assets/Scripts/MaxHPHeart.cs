@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Meat : MonoBehaviour
+public class MaxHPHeart : MonoBehaviour
 {
-    public GameObject RisingText; 
+    public GameObject RisingText;
+    // Start is called before the first frame update
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.transform.tag == "Player")
         {
-            MainPlayer.PlayerHP++;
+            MainPlayer.MaxHP++;
 
-            RisingText.GetComponentInChildren<Text>().text = "Heal!";
+            RisingText.GetComponentInChildren<Text>().text = "MaxHP +1 !";
             RisingText.GetComponentInChildren<Text>().color = new Color(1, 1, 1, 1);
             GameObject points = Instantiate(RisingText, transform.position, Quaternion.identity);
             Destroy(points, 2);

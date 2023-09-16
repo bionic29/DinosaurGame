@@ -83,31 +83,40 @@ public class Aerodactyle : MonoBehaviour
         {
             for (int i = 0; i <= Bones.Length - 1; i++)
             {
-                int chance = Random.Range(0, 3);
+                int chance = Random.Range(0, 5);
                 if (chance != 0)
                 {
                     float X = Random.Range(-8, 8);
                     float Y = Random.Range(-8, 8);
                     GameObject bone = Instantiate(Bones[i], transform.position, Quaternion.identity);
                     bone.GetComponent<Rigidbody2D>().AddForce(new Vector2(X, Y), ForceMode2D.Impulse);
-                    Destroy(bone, 10);
+                    Destroy(bone, 5);
                 }
             }
 
                 for (int i = 0; i <= Drops.Length - 1; i++)
             {
-                int chance = Random.Range(0, 10);
+                int chance = Random.Range(0, 20);
                 if (chance==0) 
                 {
                     float X = Random.Range(-8, 8);
                     float Y = Random.Range(-8, 8);
                     GameObject drop = Instantiate(Drops[i], transform.position, Quaternion.identity);
                     drop.GetComponent<Rigidbody2D>().AddForce(new Vector2(X, Y), ForceMode2D.Impulse);
-                    
+
+                    //Destroy(drop, 15);  
                 }
             }
             Destroy(gameObject);
             Destroy(target);
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.transform.tag == "Wall" || collision.transform.tag == "Player")
+        {
+            StopWalk();
         }
     }
 

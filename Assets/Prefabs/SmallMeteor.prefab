@@ -5039,7 +5039,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.5882353}
   m_FlipX: 0
@@ -5139,8 +5139,10 @@ MonoBehaviour:
   MeteorBody: {fileID: 7891803901854761364}
   Explode: {fileID: 5429606048837981008, guid: 9332da3674af4264eb88682e4c241ba6, type: 3}
   Shadow: {fileID: 7891803902348078510}
+  Big: 0
   TimeofImpact: 1
   TimeofSend: 1
   duration: 6
   Mass: 1
   Follow: 3
+  ExpDestroy: 4
