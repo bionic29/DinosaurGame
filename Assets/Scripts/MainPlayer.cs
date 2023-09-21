@@ -9,7 +9,7 @@ public class MainPlayer : MonoBehaviour
     public Vector3 movement;
     Rigidbody2D rb;
     public SpriteRenderer Sr;
-    public GameObject Shadow, GameOver;
+    public GameObject Shadow, GameOver, HPText;
     Animator anim;
 
     public GameObject[] Bones;
@@ -24,12 +24,15 @@ public class MainPlayer : MonoBehaviour
     public GameObject RisingText;
     public Color TextColor, Normal, Hurt;
 
+    GameManager GM;
+
     CamShake Scam;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        GM = FindObjectOfType<GameManager>().GetComponent<GameManager>();
         GotHit = false;
         MaxHP = MaxHPAmount;
         PlayerHP = MaxHP;
@@ -112,7 +115,8 @@ public class MainPlayer : MonoBehaviour
 
     void Die()
     {
-        for(int i=0; i<=Bones.Length-1;i++)
+        HPText.SetActive(false);
+        for (int i=0; i<=Bones.Length-1;i++)
         {
             float X = Random.Range(-8, 8);
             float Y = Random.Range(-8, 8);
@@ -120,6 +124,9 @@ public class MainPlayer : MonoBehaviour
             bone.GetComponent<Rigidbody2D>().AddForce(new Vector2(X, Y), ForceMode2D.Impulse);
             //Destroy(bone, 10);
         }
+
+       
+        GM.SaveHighScore(GameManager.Meteorcount);
 
         Scam.ShakeDuration = 0.5f;
         Scam.ShakeAmplitude = 10;
@@ -131,6 +138,15 @@ public class MainPlayer : MonoBehaviour
         Shadow.SetActive(false);
     }
 
+    public void HighScoreText()
+    {
+        Invoke(nameof(HSTextRise), 1);   
+    }
     
+    void HSTextRise()
+    {
+        RisingText.GetComponentInChildren<Text>().text = "New HighScore!!";
+        RisingText.GetComponentInChildren<Text>().color = TextColor;
+    }
 
 }

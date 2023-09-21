@@ -101,7 +101,7 @@ public class Aerodactyle : MonoBehaviour
                 {
                     float X = Random.Range(-8, 8);
                     float Y = Random.Range(-8, 8);
-                    GameObject drop = Instantiate(Drops[i], transform.position, Quaternion.identity);
+                    GameObject drop = Instantiate(Drops[i], transform.position+ new Vector3(X/10, Y / 10), Quaternion.identity);
                     drop.GetComponent<Rigidbody2D>().AddForce(new Vector2(X, Y), ForceMode2D.Impulse);
 
                     //Destroy(drop, 15);  
